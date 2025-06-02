@@ -46,30 +46,25 @@ def generate_blog_post(keyword, seo_metrics):
     except Exception as e:
         # Try with DeepSeek API key if OpenAI fails
         try:
-            print("Trying DeepSeek API...")
-            deepseek_api_key = os.getenv("ai-blog-generator")  # Set your DeepSeek key
-
+            print("Trying Groq API...")
+            groq_api_key = os.getenv("groq-api-key", "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")
             headers = {
                 "Content-Type": "application/json",
-                "Authorization": f"Bearer {deepseek_api_key}"
+                "Authorization": f"Bearer {groq_api_key}"
             }
-
             payload = {
-                "model": "deepseek-chat",
+                "model": "meta-llama/llama-4-scout-17b-16e-instruct",
                 "messages": [
-                    {"role": "system", "content": "You are a helpful assistant."},
                     {"role": "user", "content": prompt}
                 ],
                 "max_tokens": 1024,
                 "temperature": 0.7,
             }
-
             response = requests.post(
-                "https://api.deepseek.com/v1/chat/completions",  # Replace with actual DeepSeek endpoint if different
+                "https://api.groq.com/openai/v1/chat/completions",
                 headers=headers,
                 data=json.dumps(payload)
             )
-
             if response.status_code == 200:
                 data = response.json()
                 post_content = data["choices"][0]["message"]["content"]
@@ -77,6 +72,7 @@ def generate_blog_post(keyword, seo_metrics):
                     post_content = post_content.replace(f"{{{{{placeholder}}}}}", link)
                 return post_content
             else:
-                return f"DeepSeek API error: {response.status_code} - {response.text}"
+                return f"Groq API error: {response.status_code} - {response.text}"
+       
         except Exception as e2:
-                    return f"Both OpenAI and DeepSeek API calls failed: {str(e2)}"
+                    return f"Both OpenAI and Groq API calls failed: {str(e2)}"

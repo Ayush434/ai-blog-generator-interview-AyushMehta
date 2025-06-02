@@ -34,6 +34,8 @@ def generate_and_save(keyword):
 
 @app.route("/generate", methods=["GET"])
 @app.route("/generate/", methods=["GET"])
+@app.route("/generate", methods=["GET"])
+@app.route("/generate/", methods=["GET"])
 def generate():
     print("🎯 /generate endpoint called")
     keyword = request.args.get("keyword", "wireless earbuds")  # default fallback
@@ -48,6 +50,12 @@ def generate():
     post = post.replace("{{AFF_LINK_1}}", "https://www.amazon.com/Bluetooth-Headphones-Cancelling-Earphones-Waterproof/dp/B0CX1TJ228/ref=asc_df_B0CX1TJ228?tag=bingshoppinga-20&linkCode=df0&hvadid=80814295299799&hvnetw=o&hvqmt=e&hvbmt=be&hvdev=c&hvlocint=&hvlocphy=&hvtargid=pla-4584413765559018&msclkid=a61113820e7b188f1d667bbeeb0ca4e5&th=1")
     post = post.replace("{{AFF_LINK_2}}", "https://goaxil.com/products/gx-extreme?variant=33887794561083&msclkid=bc72d9da694819380f48b1e68c3f2c3d")
     post = post.replace("{{AFF_LINK_3}}", "https://goaxil.com/products/nascar-xcor?msclkid=4558813ee68c1a6ee01ae90203fb2019")
+
+    # Save to file
+    filename = f"generated_{keyword.replace(' ', '_')}_{datetime.datetime.now().strftime('%Y%m%d')}.md"
+    with open(filename, "w", encoding="utf-8") as f:
+        f.write(post)
+    print(f"Generated post saved to {filename}")
 
     return jsonify({
         "keyword": keyword,
