@@ -1,7 +1,6 @@
 import json
 import os
 import openai
-import deepseek
 import requests
 
 openai.api_key = os.getenv("ai-blog-generator")
@@ -47,7 +46,7 @@ def generate_blog_post(keyword, seo_metrics):
         # Try with DeepSeek API key if OpenAI fails
         try:
             print("Trying Groq API...")
-            groq_api_key = os.getenv("groq-api-key", "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")
+            groq_api_key = os.getenv("groq-api-key")
             headers = {
                 "Content-Type": "application/json",
                 "Authorization": f"Bearer {groq_api_key}"
