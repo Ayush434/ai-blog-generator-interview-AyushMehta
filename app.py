@@ -16,7 +16,7 @@ PREDEFINED_KEYWORD = "wireless earbuds"
 
 @app.route("/")
 def home():
-    return "Flask is running!"
+    return "Ai Blog generator is running! Use /generate?keyword=your_keyword to generate a blog post."
 
 def generate_and_save(keyword):
     seo_metrics = get_seo_metrics(keyword)
@@ -32,8 +32,7 @@ def generate_and_save(keyword):
         f.write(post)
     print(f"Generated post saved to {filename}")
 
-@app.route("/generate", methods=["GET"])
-@app.route("/generate/", methods=["GET"])
+
 @app.route("/generate", methods=["GET"])
 @app.route("/generate/", methods=["GET"])
 def generate():
